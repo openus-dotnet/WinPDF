@@ -41,13 +41,17 @@ namespace PDF
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Filter = "PDF File|*.pdf",
+                Multiselect = true,
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                PdfDocument docs = PdfReader.Open(dialog.FileName, PdfDocumentOpenMode.Import);
-                PdfNumbering wrap = new PdfNumbering(PdfNumbering.LastNumber++, docs);
-                PDFListBox.Items.Add(wrap);
+                foreach (var file in dialog.FileNames)
+                {
+                    PdfDocument docs = PdfReader.Open(file, PdfDocumentOpenMode.Import);
+                    PdfNumbering wrap = new PdfNumbering(PdfNumbering.LastNumber++, docs);
+                    PDFListBox.Items.Add(wrap);
+                }
             }
 
         }
