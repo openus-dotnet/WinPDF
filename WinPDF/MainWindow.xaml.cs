@@ -56,6 +56,7 @@ namespace WinPDF
         }
 
         public List<PdfWrap> Documents { get; set; } = new List<PdfWrap>();
+        public PdfDocument? SelectedPdf { get; set; }
 
         public MainWindow()
         {
@@ -112,6 +113,7 @@ namespace WinPDF
             if (item != null)
             {
                 SetPdfLabel(item);
+                SelectedPdf = item.Document;
             }
         }
 
@@ -123,7 +125,7 @@ namespace WinPDF
             string line = "\r\n";
 
             PdfInfoLabel.Content =
-                "Selected PDF Information" + line +
+                "Selected PDF Information" + line + line +
                 "PDF Name: " + item.Name + line +
                 "PDF Location: " + item.Document.FullPath[0..(item.Document.FullPath.Length - item.Name.Length)] + line +
                 "PDF Page Count: " + item.Document.PageCount + line;
@@ -136,64 +138,52 @@ namespace WinPDF
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void FromToTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            PartedPaging(sender);
-        }
-
         private void FromToTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                PartedPaging(sender);
+                PartedPaging();
             }
         }
 
-        private void PartedPaging(object sender)
+        private void PartedPaging()
         {
-            TextBox? box = sender as TextBox;
+            int resultFrom = int.Parse(FromTextBox.Text) - 1;
+            int resultTo = int.Parse(ToTextBox.Text) - 1;
 
-            if (box != null)
+            if (PdfListBox.SelectedItem != null)
             {
-                bool tryParse = int.TryParse(box.Text, out int result);
-                result--;
+                PdfWrap? wrap = PdfListBox.SelectedItem as PdfWrap;
 
-                if (tryParse == true)
+                if (resultFrom < 0 || resultFrom > wrap!.Document.PageCount || resultTo < 0 || resultTo > wrap!.Document.PageCount)
                 {
-                    if (PdfListBox.SelectedItem != null)
+                    MessageBox.Show((resultFrom + 1) + "~" + (resultTo + 1) + " is invalid number.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (int.Parse(FromTextBox.Text) > int.Parse(ToTextBox.Text))
+                {
+                    MessageBox.Show("From page is not over than to page.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    PdfDocument document = new PdfDocument();
+                    string path = Environment.CurrentDirectory + "\\temp\\" + wrap.Name[0..(wrap.Name.Length - 4)]
+                        + "(" + FromTextBox.Text + "-" + ToTextBox.Text + ").pdf";
+
+                    for (int i = int.Parse(FromTextBox.Text) - 1; i < int.Parse(ToTextBox.Text); i++)
                     {
-                        PdfWrap? wrap = PdfListBox.SelectedItem as PdfWrap;
-
-                        if (result < 0 || result > wrap!.Document.PageCount)
-                        {
-                            MessageBox.Show((result + 1) + " is invalid number.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        else if (int.Parse(FromTextBox.Text) > int.Parse(ToTextBox.Text))
-                        {
-                            MessageBox.Show("From page is not over than to page.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        else
-                        {
-                            PdfDocument document = new PdfDocument();
-                            string path = Environment.CurrentDirectory + "\\temp\\" + wrap.Name[0..(wrap.Name.Length - 4)] 
-                                + "(" + FromTextBox.Text + "-" + ToTextBox.Text + ").pdf";
-
-                            for (int i = int.Parse(FromTextBox.Text) - 1; i < int.Parse(ToTextBox.Text); i++)
-                            {
-                                document.Pages.Add(wrap.Document.Pages[i]);
-                            }
-
-                            document.Save(path);
-
-                            WebView.Source = new Uri(path);
-                        }
+                        document.Pages.Add(wrap.Document.Pages[i]);
                     }
+
+                    document.Save(path);
+
+                    WebView.Source = new Uri(path);
                 }
             }
         }
 
         private void AddResultButton_Click(object sender, RoutedEventArgs e)
         {
+            PartedPaging();
             ResultListBox.Items.Add(new PdfWrap(PdfReader.Open(WebView.Source.LocalPath, PdfDocumentOpenMode.Import)));
         }
 
@@ -212,7 +202,8 @@ namespace WinPDF
 
             pdf.Save(path);
             WebView.Source = new Uri(path);
-            SetPdfLabel(new PdfWrap(PdfReader.Open(path)));
+            SelectedPdf = pdf;
+            SetPdfLabel(new PdfWrap(PdfReader.Open(path, PdfDocumentOpenMode.Import)));
         }
 
         private void ResultSaveButton_Click(object sender, RoutedEventArgs e)
@@ -245,6 +236,29 @@ namespace WinPDF
             if (listBox != null)
             {
                 listBox.SelectedItem = null;
+            }
+        }
+
+        private void FromToTextBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+
+            if (textBox != null && int.TryParse(textBox.Text, out int a) && SelectedPdf != null)
+            {
+                if (e.Delta > 0)
+                {
+                    if (a + 1 <= SelectedPdf.PageCount)
+                    {
+                        textBox.Text = (a + 1).ToString();
+                    }
+                }
+                else
+                {
+                    if (a - 1 > 0)
+                    {
+                        textBox.Text = (a - 1).ToString();
+                    }
+                }
             }
         }
     }

@@ -66,16 +66,16 @@
                          Margin="5"
                          Foreground="White"
                          PreviewTextInput="FromToTextBox_PreviewTextInput"
-                         LostFocus="FromToTextBox_LostFocus"
-                         KeyDown="FromToTextBox_KeyDown"/>
+                         KeyDown="FromToTextBox_KeyDown"
+                         MouseWheel="FromToTextBox_MouseWheel"/>
                 <TextBox x:Name="ToTextBox"
                          Background="#2F2F2F"
                          Margin="5"
                          Foreground="White"
                          Grid.Column="2"
                          PreviewTextInput="FromToTextBox_PreviewTextInput"
-                         LostFocus="FromToTextBox_LostFocus"
-                         KeyDown="FromToTextBox_KeyDown"/>
+                         KeyDown="FromToTextBox_KeyDown"
+                         MouseWheel="FromToTextBox_MouseWheel"/>
                 <Label Content="~"
                        Foreground="White"
                        Grid.Column="1"/>
@@ -85,7 +85,7 @@
                         Margin="5"
                         Background="#2F2F2F"
                         Foreground="White"
-                        Content="Add range"
+                        Content="Append the range"
                         Click="AddResultButton_Click"/>
             </Grid>
             <ListBox x:Name="ResultListBox"
@@ -105,14 +105,14 @@
                         Margin="5"
                         Background="#2F2F2F"
                         Foreground="White"
-                        Content="Preview"
+                        Content="Preview result"
                         Click="ResultPreviewButton_Click"/>
                 <Button x:Name="ResultSaveButton"
                         Grid.Column="1"
                         Margin="5"
                         Background="#2F2F2F"
                         Foreground="White"
-                        Content="Save"
+                        Content="Save result"
                         Click="ResultSaveButton_Click"/>
             </Grid>
         </Grid>
