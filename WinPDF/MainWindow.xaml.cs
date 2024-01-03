@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -89,14 +90,34 @@ namespace WinPDF
             {
                 PdfListBox.Items.Clear();
 
-                foreach (var file in dialog.FileNames)
+                int sequance = 0;
+
+                for (int i = 0; i < dialog.FileNames.Length; i++)
                 {
+                    string file = dialog.FileNames[i];
+                    int x = i;
+
                     try
                     {
-                        PdfDocument pdf = PdfReader.Open(file, PdfDocumentOpenMode.Import);
-                        PdfWrap wrap = new PdfWrap(pdf);
-                        Documents.Add(wrap);
-                        PdfListBox.Items.Add(wrap);
+                        new Thread(() =>
+                        {
+                            PdfDocument pdf = PdfReader.Open(file, PdfDocumentOpenMode.Import);
+
+                            while (sequance != x) ;
+
+                            lock (Documents)
+                            {
+                                Dispatcher.Invoke(() =>
+                                {
+                                    PdfWrap wrap = new PdfWrap(pdf);
+                                    
+                                    Documents.Add(wrap!);
+                                    PdfListBox.Items.Add(wrap);
+                                });
+
+                                sequance++;
+                            }
+                        }).Start();
                     }
                     catch (Exception ex)
                     {

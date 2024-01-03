@@ -67,7 +67,8 @@
                          Foreground="White"
                          PreviewTextInput="FromToTextBox_PreviewTextInput"
                          KeyDown="FromToTextBox_KeyDown"
-                         MouseWheel="FromToTextBox_MouseWheel"/>
+                         MouseWheel="FromToTextBox_MouseWheel"
+                         TextAlignment="Right"/>
                 <TextBox x:Name="ToTextBox"
                          Background="#2F2F2F"
                          Margin="5"
@@ -75,7 +76,8 @@
                          Grid.Column="2"
                          PreviewTextInput="FromToTextBox_PreviewTextInput"
                          KeyDown="FromToTextBox_KeyDown"
-                         MouseWheel="FromToTextBox_MouseWheel"/>
+                         MouseWheel="FromToTextBox_MouseWheel"
+                         TextAlignment="Right"/>
                 <Label Content="~"
                        Foreground="White"
                        Grid.Column="1"/>
