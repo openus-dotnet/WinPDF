@@ -16,13 +16,9 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid x:Name="ViewGrid"
-              Grid.Column="0">
-            <Wpf:WebView2 x:Name="WebView"
-                          Margin="5"
-                          DefaultBackgroundColor="#2F2F2F"/>
-        </Grid>
-        <Grid x:Name="ListGrid"
+        <Wpf:WebView2 x:Name="WebView"
+                      Margin="5"/>
+            <Grid x:Name="ListGrid"
               Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -87,7 +83,7 @@
                         Margin="5"
                         Background="#2F2F2F"
                         Foreground="White"
-                        Content="Append the range"
+                        Content="Append"
                         Click="AddResultButton_Click"/>
             </Grid>
             <ListBox x:Name="ResultListBox"
@@ -101,21 +97,29 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="ResultPreviewButton"
                         Grid.Column="0"
                         Margin="5"
                         Background="#2F2F2F"
                         Foreground="White"
-                        Content="Preview result"
+                        Content="Preview all"
                         Click="ResultPreviewButton_Click"/>
                 <Button x:Name="ResultSaveButton"
                         Grid.Column="1"
                         Margin="5"
                         Background="#2F2F2F"
                         Foreground="White"
-                        Content="Save result"
+                        Content="Save merge"
                         Click="ResultSaveButton_Click"/>
+                <Button x:Name="ResultSplitButton"
+                        Grid.Column="2"
+                        Margin="5"
+                        Background="#2F2F2F"
+                        Foreground="White"
+                        Content="Save split"
+                        Click="ResultSplitButton_Click"/>
             </Grid>
         </Grid>
     </Grid>

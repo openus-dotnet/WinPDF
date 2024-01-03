@@ -33,6 +33,7 @@ namespace WinPDF
         {
             public PdfDocument Document { get; set; }
             public new string Name => Document.FullPath.Split('\\').Last();
+            public static ListBox? ResultListBox { get; set; }
 
             public PdfWrap(PdfDocument pdf)
             {
@@ -40,6 +41,15 @@ namespace WinPDF
                 Content = Document.FullPath.Split('\\').Last();
                 Foreground = new SolidColorBrush(Colors.White);
                 MouseDown += PdfWrap_MouseDown;
+                MouseDoubleClick += PdfWrap_MouseDoubleClick;
+            }
+
+            private void PdfWrap_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    ResultListBox!.Items.Add(new PdfWrap(Document));
+                }
             }
 
             private void PdfWrap_MouseDown(object sender, MouseButtonEventArgs e)
@@ -76,6 +86,8 @@ namespace WinPDF
                     file.Delete();
                 }
             }
+
+            PdfWrap.ResultListBox = ResultListBox;
         }
 
         private void PdfAddButton_Click(object sender, RoutedEventArgs e)
@@ -212,6 +224,13 @@ namespace WinPDF
 
         private void AddResultButton_Click(object sender, RoutedEventArgs e)
         {
+            if (SelectedPdf == null)
+            {
+                MessageBox.Show("You do not select PDF", "Invalid call", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                return;
+            }
+            
             if (PartedPaging() == true)
             {
                 ResultListBox.Items.Add(new PdfWrap(PdfReader.Open(WebView.Source.LocalPath, PdfDocumentOpenMode.Import)));
@@ -231,10 +250,18 @@ namespace WinPDF
                 }
             }
 
-            pdf.Save(path);
-            WebView.Source = new Uri(path);
-            SelectedPdf = pdf;
-            SetPdfLabel(new PdfWrap(PdfReader.Open(path, PdfDocumentOpenMode.Import)));
+            try
+            {
+                pdf.Save(path);
+
+                PreviewWindow preview = new PreviewWindow();
+                preview.PreviewWebView.Source = new Uri(path);
+                preview.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Invaild call", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ResultSaveButton_Click(object sender, RoutedEventArgs e)
@@ -256,7 +283,14 @@ namespace WinPDF
 
             if (dialog.ShowDialog() == true)
             {
-                pdf.Save(dialog.FileName);
+                try
+                {
+                    pdf.Save(dialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Invaild call", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -288,6 +322,38 @@ namespace WinPDF
                     if (a - 1 > 0)
                     {
                         textBox.Text = (a - 1).ToString();
+                    }
+                }
+            }
+        }
+
+        private void ResultSplitButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog() 
+            {
+                Filter = "PDF File|*.pdf",
+            };
+
+            int i = 1;
+
+            if (dialog.ShowDialog() == true)
+            {
+                foreach (PdfWrap wrap in ResultListBox.Items)
+                {
+                    foreach (PdfPage page in wrap.Document.Pages)
+                    {
+                        PdfDocument pdf = new PdfDocument();
+
+                        pdf.Pages.Add(page);
+
+                        try
+                        {
+                            pdf.Save(dialog.FileName[0..(dialog.FileName.Length - 4)] + (i++) + ".pdf");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Invaild call", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                 }
             }
