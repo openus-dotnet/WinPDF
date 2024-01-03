@@ -32,8 +32,8 @@
                      Background="#2F2F2F"
                      Margin="5"
                      Foreground="White"
-                     SelectionChanged="PdfListBox_SelectionChanged"
-                     GotFocus="PdfListBox_GotFocus"/>
+                     SelectionChanged="ListBox_SelectionChanged"
+                     GotFocus="ListBox_GotFocus"/>
             <Button x:Name="PdfAddButton"
                     Background="#2F2F2F"
                     Margin="5"
@@ -93,8 +93,8 @@
                      Grid.Row="2"
                      Margin="5"
                      Foreground="White"
-                     SelectionChanged="PdfListBox_SelectionChanged"
-                     GotFocus="PdfListBox_GotFocus"/>
+                     SelectionChanged="ListBox_SelectionChanged"
+                     GotFocus="ListBox_GotFocus"/>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

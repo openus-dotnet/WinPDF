@@ -106,7 +106,7 @@ namespace WinPDF
             }
         }
 
-        private void PdfListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PdfWrap? item = (sender as ListBox)!.SelectedItem as PdfWrap;
             
@@ -146,7 +146,7 @@ namespace WinPDF
             }
         }
 
-        private void PartedPaging()
+        private bool PartedPaging()
         {
             int resultFrom = int.Parse(FromTextBox.Text) - 1;
             int resultTo = int.Parse(ToTextBox.Text) - 1;
@@ -158,10 +158,14 @@ namespace WinPDF
                 if (resultFrom < 0 || resultFrom > wrap!.Document.PageCount || resultTo < 0 || resultTo > wrap!.Document.PageCount)
                 {
                     MessageBox.Show((resultFrom + 1) + "~" + (resultTo + 1) + " is invalid number.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    return false;
                 }
                 else if (int.Parse(FromTextBox.Text) > int.Parse(ToTextBox.Text))
                 {
                     MessageBox.Show("From page is not over than to page.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                    return false;
                 }
                 else
                 {
@@ -177,14 +181,20 @@ namespace WinPDF
                     document.Save(path);
 
                     WebView.Source = new Uri(path);
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private void AddResultButton_Click(object sender, RoutedEventArgs e)
         {
-            PartedPaging();
-            ResultListBox.Items.Add(new PdfWrap(PdfReader.Open(WebView.Source.LocalPath, PdfDocumentOpenMode.Import)));
+            if (PartedPaging() == true)
+            {
+                ResultListBox.Items.Add(new PdfWrap(PdfReader.Open(WebView.Source.LocalPath, PdfDocumentOpenMode.Import)));
+            }
         }
 
         private void ResultPreviewButton_Click(object sender, RoutedEventArgs e)
@@ -229,7 +239,7 @@ namespace WinPDF
             }
         }
 
-        private void PdfListBox_GotFocus(object sender, RoutedEventArgs e)
+        private void ListBox_GotFocus(object sender, RoutedEventArgs e)
         {
             ListBox? listBox = sender as ListBox;
 
