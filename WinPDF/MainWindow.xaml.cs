@@ -56,7 +56,8 @@ namespace WinPDF
             {
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    MessageBoxResult result = MessageBox.Show("Remove the " + Name + "?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show("Remove the " + Name + 
+                        "?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Question);
                 
                     if (result == MessageBoxResult.OK)
                     {
@@ -139,7 +140,7 @@ namespace WinPDF
                                 sequance++;
                             }
 
-                            MessageBox.Show(ex.Message + "\r\n" + file, "Invalid PDF", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(ex.Message + "\r\n" + file, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }).Start();
                 }
@@ -197,13 +198,13 @@ namespace WinPDF
 
                 if (resultFrom < 0 || resultFrom > wrap!.Document.PageCount || resultTo < 0 || resultTo > wrap!.Document.PageCount)
                 {
-                    MessageBox.Show((resultFrom + 1) + "~" + (resultTo + 1) + " is invalid number.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show((resultFrom + 1) + "~" + (resultTo + 1) + " is invalid number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                     return false;
                 }
                 else if (int.Parse(FromTextBox.Text) > int.Parse(ToTextBox.Text))
                 {
-                    MessageBox.Show("From page is not over than to page.", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("From page is not over than to page.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 
                     return false;
                 }
@@ -233,7 +234,7 @@ namespace WinPDF
         {
             if (SelectedPdf == null)
             {
-                MessageBox.Show("You do not select PDF", "Invalid call", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You do not select PDF", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 
                 return;
             }
@@ -267,7 +268,7 @@ namespace WinPDF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Invaild call", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -296,7 +297,7 @@ namespace WinPDF
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Invaild call", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -359,7 +360,7 @@ namespace WinPDF
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, "Invaild call", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
