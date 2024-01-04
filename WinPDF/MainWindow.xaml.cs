@@ -109,9 +109,9 @@ namespace WinPDF
                     string file = dialog.FileNames[i];
                     int x = i;
 
-                    try
+                    new Thread(() =>
                     {
-                        new Thread(() =>
+                        try
                         {
                             PdfDocument pdf = PdfReader.Open(file, PdfDocumentOpenMode.Import);
 
@@ -122,19 +122,26 @@ namespace WinPDF
                                 Dispatcher.Invoke(() =>
                                 {
                                     PdfWrap wrap = new PdfWrap(pdf);
-                                    
+
                                     Documents.Add(wrap!);
                                     PdfListBox.Items.Add(wrap);
                                 });
 
                                 sequance++;
                             }
-                        }).Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Invalid PDF", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                        }
+                        catch (Exception ex)
+                        {
+                            while (sequance != x) ;
+
+                            lock (Documents)
+                            {
+                                sequance++;
+                            }
+
+                            MessageBox.Show(ex.Message, "Invalid PDF", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }).Start();
                 }
             }
         }
