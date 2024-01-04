@@ -139,7 +139,7 @@ namespace WinPDF
                                 sequance++;
                             }
 
-                            MessageBox.Show(ex.Message, "Invalid PDF", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(ex.Message + "\r\n" + file, "Invalid PDF", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }).Start();
                 }
