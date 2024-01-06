@@ -33,7 +33,7 @@ namespace WinPDF
         {
             public PdfDocument Document { get; set; }
             public new string Name => Document.FullPath.Split('\\').Last();
-            public static ListBox? ResultListBox { get; set; }
+            public static ListBox? AppendPdfListBox { get; set; }
 
             public PdfWrap(PdfDocument pdf)
             {
@@ -48,7 +48,7 @@ namespace WinPDF
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    ResultListBox!.Items.Add(new PdfWrap(Document));
+                    AppendPdfListBox!.Items.Add(new PdfWrap(Document));
                 }
             }
 
@@ -87,10 +87,10 @@ namespace WinPDF
                 }
             }
 
-            PdfWrap.ResultListBox = ResultListBox;
+            PdfWrap.AppendPdfListBox = ResultListBox;
         }
 
-        private void PdfAddButton_Click(object sender, RoutedEventArgs e)
+        private void SelectPdfButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog() 
             {
@@ -101,9 +101,8 @@ namespace WinPDF
             if (dialog.ShowDialog() == true)
             {
                 int sequance = 0;
-                
-                ProgressBarWindow window = new ProgressBarWindow(dialog.FileNames.Length);
-                window.ShowDialog();
+
+                CreateProgressBar(dialog.FileNames.Length);
 
                 for (int i = 0; i < dialog.FileNames.Length; i++)
                 {
@@ -118,14 +117,14 @@ namespace WinPDF
 
                             while (sequance != x) ;
 
-                            lock (PdfListBox)
+                            lock (SelectPdfListBox)
                             {
                                 Dispatcher.Invoke(() =>
                                 {
                                     PdfWrap wrap = new PdfWrap(pdf);
-                                    
-                                    Documents.Add(wrap!);
-                                    PdfListBox.Items.Add(wrap);
+                                    SelectPdfListBox.Items.Add(wrap);
+
+                                    ProgressingBar();
                                 });
 
                                 sequance++;
@@ -135,7 +134,7 @@ namespace WinPDF
                         {
                             while (sequance != x) ;
 
-                            lock (Documents)
+                            lock (SelectPdfListBox)
                             {
                                 sequance++;
                             }
@@ -158,19 +157,14 @@ namespace WinPDF
             }
         }
 
-        private void SetPdfLabel(PdfWrap item)
+        private void ListBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            FromTextBox.Text = "1";
-            ToTextBox.Text = item.Document.PageCount.ToString();
+            ListBox? listBox = sender as ListBox;
 
-            string line = "\r\n";
-
-            PdfInfoLabel.Content =
-                "Selected PDF Information" + line + line +
-                "PDF Name: " + item.Name + line +
-                "PDF Location: " + item.Document.FullPath[0..(item.Document.FullPath.Length - item.Name.Length)] + line +
-                "PDF Page Count: " + item.Document.PageCount + line;
-            WebView.Source = new Uri(item.Document.FullPath);
+            if (listBox != null)
+            {
+                listBox.SelectedItem = null;
+            }
         }
 
         private void FromToTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -187,14 +181,173 @@ namespace WinPDF
             }
         }
 
+        private void FromToTextBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+
+            if (textBox != null && int.TryParse(textBox.Text, out int a) && SelectedPdf != null)
+            {
+                if (e.Delta > 0)
+                {
+                    if (a + 1 <= SelectedPdf.PageCount)
+                    {
+                        textBox.Text = (a + 1).ToString();
+                    }
+                }
+                else
+                {
+                    if (a - 1 > 0)
+                    {
+                        textBox.Text = (a - 1).ToString();
+                    }
+                }
+            }
+        }
+
+        private void AppendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedPdf == null)
+            {
+                MessageBox.Show("You do not select PDF", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                return;
+            }
+            
+            if (PartedPaging() == true)
+            {
+                ResultListBox.Items.Add(new PdfWrap(PdfReader.Open(WebView.Source.LocalPath, PdfDocumentOpenMode.Import)));
+            }
+        }
+
+        private void PreviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            PdfDocument pdf = new PdfDocument();
+            string path = Environment.CurrentDirectory + "\\temp\\" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".pdf";
+
+            foreach (PdfWrap wrap in ResultListBox.Items)
+            {
+                foreach (PdfPage page in wrap.Document.Pages)
+                {
+                    pdf.Pages.Add(page);
+                }
+            }
+
+            try
+            {
+                pdf.Save(path);
+
+                PreviewWindow preview = new PreviewWindow();
+                preview.PreviewWebView.Source = new Uri(path);
+                preview.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SaveMergeButton_Click(object sender, RoutedEventArgs e)
+        {
+            PdfDocument pdf = new PdfDocument();
+
+            foreach (PdfWrap wrap in ResultListBox.Items)
+            {
+                foreach (PdfPage page in wrap.Document.Pages)
+                {
+                    pdf.Pages.Add(page);
+                }
+            }
+
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+                Filter = "PDF File|*.pdf",
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    pdf.Save(dialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SaveSplitButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog() 
+            {
+                Filter = "PDF File|*.pdf",
+            };
+
+            int i = 1;
+
+            if (dialog.ShowDialog() == true)
+            {
+                foreach (PdfWrap wrap in ResultListBox.Items)
+                {
+                    foreach (PdfPage page in wrap.Document.Pages)
+                    {
+                        PdfDocument pdf = new PdfDocument();
+
+                        pdf.Pages.Add(page);
+
+                        try
+                        {
+                            pdf.Save(dialog.FileName[0..(dialog.FileName.Length - 4)] + (i++) + ".pdf");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CreateProgressBar(int maximum)
+        {
+            PublicProgressBar.Maximum = maximum;
+            PublicProgressBar.Visibility = Visibility.Visible;
+            PublicProgressBar.Value = 0;
+        }
+
+        private void ProgressingBar(int value = 1)
+        {
+            PublicProgressBar.Value += value;
+
+            if (PublicProgressBar.Value == PublicProgressBar.Maximum)
+            {
+                PublicProgressBar.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SetPdfLabel(PdfWrap item)
+        {
+            FromTextBox.Text = "1";
+            ToTextBox.Text = item.Document.PageCount.ToString();
+
+            string line = "\r\n";
+
+            PdfInfoLabel.Content =
+                "Selected PDF Information" + line + line +
+                "PDF Name: " + item.Name + line +
+                "PDF Location: " + item.Document.FullPath[0..(item.Document.FullPath.Length - item.Name.Length)] + line +
+                "PDF Page Count: " + item.Document.PageCount + line;
+            WebView.Source = new Uri(item.Document.FullPath);
+        }
+
         private bool PartedPaging()
         {
             int resultFrom = int.Parse(FromTextBox.Text) - 1;
             int resultTo = int.Parse(ToTextBox.Text) - 1;
 
-            if (PdfListBox.SelectedItem != null)
+            if (SelectPdfListBox.SelectedItem != null)
             {
-                PdfWrap? wrap = PdfListBox.SelectedItem as PdfWrap;
+                PdfWrap? wrap = SelectPdfListBox.SelectedItem as PdfWrap;
 
                 if (resultFrom < 0 || resultFrom > wrap!.Document.PageCount || resultTo < 0 || resultTo > wrap!.Document.PageCount)
                 {
@@ -228,143 +381,6 @@ namespace WinPDF
             }
 
             return false;
-        }
-
-        private void AddResultButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedPdf == null)
-            {
-                MessageBox.Show("You do not select PDF", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                
-                return;
-            }
-            
-            if (PartedPaging() == true)
-            {
-                ResultListBox.Items.Add(new PdfWrap(PdfReader.Open(WebView.Source.LocalPath, PdfDocumentOpenMode.Import)));
-            }
-        }
-
-        private void ResultPreviewButton_Click(object sender, RoutedEventArgs e)
-        {
-            PdfDocument pdf = new PdfDocument();
-            string path = Environment.CurrentDirectory + "\\temp\\" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".pdf";
-
-            foreach (PdfWrap wrap in ResultListBox.Items)
-            {
-                foreach (PdfPage page in wrap.Document.Pages)
-                {
-                    pdf.Pages.Add(page);
-                }
-            }
-
-            try
-            {
-                pdf.Save(path);
-
-                PreviewWindow preview = new PreviewWindow();
-                preview.PreviewWebView.Source = new Uri(path);
-                preview.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ResultSaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            PdfDocument pdf = new PdfDocument();
-
-            foreach (PdfWrap wrap in ResultListBox.Items)
-            {
-                foreach (PdfPage page in wrap.Document.Pages)
-                {
-                    pdf.Pages.Add(page);
-                }
-            }
-
-            SaveFileDialog dialog = new SaveFileDialog()
-            {
-                Filter = "PDF File|*.pdf",
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                try
-                {
-                    pdf.Save(dialog.FileName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private void ListBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ListBox? listBox = sender as ListBox;
-
-            if (listBox != null)
-            {
-                listBox.SelectedItem = null;
-            }
-        }
-
-        private void FromToTextBox_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            TextBox? textBox = sender as TextBox;
-
-            if (textBox != null && int.TryParse(textBox.Text, out int a) && SelectedPdf != null)
-            {
-                if (e.Delta > 0)
-                {
-                    if (a + 1 <= SelectedPdf.PageCount)
-                    {
-                        textBox.Text = (a + 1).ToString();
-                    }
-                }
-                else
-                {
-                    if (a - 1 > 0)
-                    {
-                        textBox.Text = (a - 1).ToString();
-                    }
-                }
-            }
-        }
-
-        private void ResultSplitButton_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog() 
-            {
-                Filter = "PDF File|*.pdf",
-            };
-
-            int i = 1;
-
-            if (dialog.ShowDialog() == true)
-            {
-                foreach (PdfWrap wrap in ResultListBox.Items)
-                {
-                    foreach (PdfPage page in wrap.Document.Pages)
-                    {
-                        PdfDocument pdf = new PdfDocument();
-
-                        pdf.Pages.Add(page);
-
-                        try
-                        {
-                            pdf.Save(dialog.FileName[0..(dialog.FileName.Length - 4)] + (i++) + ".pdf");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    }
-                }
-            }
         }
     }
 }
