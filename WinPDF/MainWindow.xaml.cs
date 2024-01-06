@@ -136,6 +136,11 @@ namespace WinPDF
 
                             lock (SelectPdfListBox)
                             {
+                                Dispatcher.Invoke(() =>
+                                {
+                                    ProgressingBar();
+                                });
+
                                 sequance++;
                             }
 
