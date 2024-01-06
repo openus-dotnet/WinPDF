@@ -66,7 +66,6 @@ namespace WinPDF
             }
         }
 
-        public List<PdfWrap> Documents { get; set; } = new List<PdfWrap>();
         public PdfDocument? SelectedPdf { get; set; }
 
         public MainWindow()
@@ -100,9 +99,10 @@ namespace WinPDF
 
             if (dialog.ShowDialog() == true)
             {
-                PdfListBox.Items.Clear();
-
                 int sequance = 0;
+                
+                ProgressBarWindow window = new ProgressBarWindow(dialog.FileNames.Length);
+                window.ShowDialog();
 
                 for (int i = 0; i < dialog.FileNames.Length; i++)
                 {
@@ -117,13 +117,11 @@ namespace WinPDF
 
                             while (sequance != x) ;
 
-                            lock (Documents)
+                            lock (PdfListBox)
                             {
                                 Dispatcher.Invoke(() =>
                                 {
                                     PdfWrap wrap = new PdfWrap(pdf);
-                                    
-                                    Documents.Add(wrap!);
                                     PdfListBox.Items.Add(wrap);
                                 });
 
