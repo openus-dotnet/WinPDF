@@ -1,3 +1,3 @@
-# WinPDF
+# Overview
 
-- WinPDF is a simple tool that helps you write PDFs easily on Windows.
+WinPDF is a simple tool that helps you write PDFs easily on Windows.
