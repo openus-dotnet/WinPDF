@@ -5,6 +5,10 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinPDF", "WinPDF\WinPDF.csproj", "{454D272A-44D7-426E-A59C-176876025DC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinPDF2", "WinPDF2\WinPDF2.csproj", "{43A261DB-FB10-4730-B4A6-500451AA7505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WP2Installer", "WP2Installer\WP2Installer.csproj", "{C05AC4B4-3008-4665-AF7E-B1F07FA98F5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{454D272A-44D7-426E-A59C-176876025DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{454D272A-44D7-426E-A59C-176876025DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{454D272A-44D7-426E-A59C-176876025DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43A261DB-FB10-4730-B4A6-500451AA7505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43A261DB-FB10-4730-B4A6-500451AA7505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43A261DB-FB10-4730-B4A6-500451AA7505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43A261DB-FB10-4730-B4A6-500451AA7505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C05AC4B4-3008-4665-AF7E-B1F07FA98F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C05AC4B4-3008-4665-AF7E-B1F07FA98F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C05AC4B4-3008-4665-AF7E-B1F07FA98F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C05AC4B4-3008-4665-AF7E-B1F07FA98F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
