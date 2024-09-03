@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WinPDF
+namespace WinPDF.View
 {
     /// <summary>
     /// Interaction logic for PreviewWindow.xaml

@@ -22,7 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WinPDF
+namespace WinPDF.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -72,6 +72,8 @@ namespace WinPDF
         public MainWindow()
         {
             InitializeComponent();
+
+            Util.SetDotNet.Run();
 
             if (Directory.Exists(Environment.CurrentDirectory + "\\temp") == false)
             {
