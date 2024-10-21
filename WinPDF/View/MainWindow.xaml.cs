@@ -73,8 +73,6 @@ namespace WinPDF.View
         {
             InitializeComponent();
 
-            Util.SetDotNet.Run();
-
             if (Directory.Exists(Environment.CurrentDirectory + "\\temp") == false)
             {
                 Directory.CreateDirectory(Environment.CurrentDirectory + "\\temp");
