@@ -50,6 +50,7 @@ namespace Openus.WinPDF2
                     Parent = _tableLayout,
                     Dock = DockStyle.Fill,
                     Margin = new Padding(5),
+                    Source = new Uri(@"https://sites.google.com/view/openus-dotnet/project/winpdf"),
                 };
 
                 GroupBox raw = new GroupBox()
