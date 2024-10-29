@@ -14,11 +14,31 @@
     <SignAssembly>False</SignAssembly>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <AssemblyName>Openus.$(MSBuildProjectName)</AssemblyName>
+    <ApplicationIcon>Properties\Openus.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\Openus.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
 	<PackageReference Include="PDFsharp" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\GlobalResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GlobalResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\GlobalResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 	
 </Project>

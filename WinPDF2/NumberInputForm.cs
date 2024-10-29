@@ -5,6 +5,7 @@ namespace Openus.WinPDF2
 {
     public class NumberInputForm : Form
     {
+        private TableLayoutPanel _tableLayoutPanel;
         private NumericUpDown _inputBox;
         private Button _submitButton;
 
@@ -12,29 +13,43 @@ namespace Openus.WinPDF2
 
         public NumberInputForm()
         {
-            this.Text = "Enter the split unit";
-            this.Width = 300;
-            this.Height = 150;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Text = "Enter the split unit";
+            ClientSize = new Size(200, 60);
+            MinimizeBox = false;
+            MaximizeBox = false;
+            ShowIcon = false;
+
+            _tableLayoutPanel = new TableLayoutPanel()
+            {
+                Parent = this,
+                ColumnCount = 1,
+                RowCount = 2,
+                Dock = DockStyle.Fill,
+            };
 
             _inputBox = new NumericUpDown()
             {
-                Location = new Point(50, 20),
-                Width = 200,
+                Parent = _tableLayoutPanel,
+                Location = new Point(5, 5),
+                Width = 190,
                 Minimum = 1,
                 Maximum = 9999,
                 Value = 1,
                 Increment = 1,
+                Dock = DockStyle.Fill,
             };
-            this.Controls.Add(_inputBox);
 
             _submitButton = new Button
             {
+                Parent = _tableLayoutPanel,
                 Text = "Submit",
-                Location = new Point(100, 60),
-                Width = 80
+                Location = new Point(5, 10 + _inputBox.Height),
+                Width = 190,
+                Height = 30,
+                Dock = DockStyle.Fill,
             };
             _submitButton.Click += SubmitButtonClick;
-            this.Controls.Add(_submitButton);
         }
 
         private void SubmitButtonClick(object? sender, EventArgs e)
