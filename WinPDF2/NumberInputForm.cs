@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WinPDF2
+namespace Openus.WinPDF2
 {
     public class NumberInputForm : Form
     {

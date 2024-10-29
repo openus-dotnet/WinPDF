@@ -1,4 +1,4 @@
-namespace WinPDF2
+namespace Openus.WinPDF2
 {
     internal static class Program
     {

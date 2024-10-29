@@ -1,7 +1,7 @@
 ﻿using Microsoft.Web.WebView2.WinForms;
 using PdfSharp.Pdf;
 
-namespace WinPDF2
+namespace Openus.WinPDF2
 {
     public class ResultPdfControl : Panel
     {

@@ -2,7 +2,7 @@
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 
-namespace WinPDF2
+namespace Openus.WinPDF2
 {
     public class RawPdfControl : Panel
     {
