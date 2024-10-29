@@ -46,7 +46,7 @@ namespace Openus.WinPDF2
                 Text = "Submit",
                 Location = new Point(5, 10 + _inputBox.Height),
                 Width = 190,
-                Height = 30,
+                Height = 25,
                 Dock = DockStyle.Fill,
             };
             _submitButton.Click += SubmitButtonClick;
