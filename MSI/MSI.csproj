@@ -6,7 +6,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationManifest>menifest.manifest</ApplicationManifest>
-    <AssemblyName>WinPDF-$(MSBuildProjectName)</AssemblyName>
+    <AssemblyName>Openus.WinPDF2-installer</AssemblyName>
     <RootNamespace>Openus.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <ApplicationIcon>Openus.ico</ApplicationIcon>
     <Authors>elecbug</Authors>
