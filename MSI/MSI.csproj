@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>menifest.manifest</ApplicationManifest>
+    <AssemblyName>WinPDF-$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Openus.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <ApplicationIcon>Openus.ico</ApplicationIcon>
+    <Authors>elecbug</Authors>
+    <Company>Openus.NET</Company>
+    <Copyright>Openus.NET</Copyright>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/openus-dotnet/WinPDF</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Openus.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
