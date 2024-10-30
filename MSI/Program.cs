@@ -10,12 +10,12 @@ namespace Openus.MSI
 {
     public class Program
     {
-        private static string InstallPath = @"C:\Program Files\Openus\winpdf";
+        private static string InstallPath = @"C:\Program Files\Openus.NET\winpdf";
         private static string MsiPath = @"C:\Program Files\Openus\installer";
         private static string GitHubApiUrl = @"https://api.github.com/repos/openus-dotnet/winpdf/releases/latest";
         private static string DesktopShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\WinPDF.lnk";
         private static string ExecutableName = "Openus.WinPDF2.exe";
-        private static string MsiFileName = "Openus.WinPDF2-installer.exe";
+        private static string MsiFileName = "Openus.WinPDF2.Installer.exe";
 
         public static async Task Main(string[] args)
         {
