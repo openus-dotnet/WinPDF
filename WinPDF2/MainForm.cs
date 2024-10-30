@@ -46,18 +46,18 @@ namespace Openus.WinPDF2
                     Parent = _tableLayout,
                 };
 
-                //CoreWebView2Environment webView2Environment
-                //    = CoreWebView2Environment.CreateAsync(null, AppPath.AppDataPath).Result;
+                CoreWebView2Environment webView2Environment
+                    = CoreWebView2Environment.CreateAsync(null, AppPath.AppMainPath).Result;
 
                 _webView = new WebView2()
                 {
                     Parent = _tableLayout,
                     Dock = DockStyle.Fill,
                     Margin = new Padding(5),
-                    Source = new Uri(@"https://sites.google.com/view/openus-dotnet/project/winpdf"),
                 };
 
-                //_webView.EnsureCoreWebView2Async(webView2Environment).Wait();
+                _webView.EnsureCoreWebView2Async(webView2Environment);
+                _webView.Source = new Uri(@"https://sites.google.com/view/openus-dotnet/project/winpdf");
 
                 GroupBox raw = new GroupBox()
                 {
