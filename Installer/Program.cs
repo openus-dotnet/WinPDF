@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
-namespace Openus.MSI
+namespace Openus.Installer
 {
     public class Program
     {
