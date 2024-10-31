@@ -61,6 +61,15 @@ namespace Openus.WinPDFv2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://sites.google.com/view/openus-dotnet/application/winpdf.
+        /// </summary>
+        internal static string HomePage {
+            get {
+                return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon OpenusIcon {

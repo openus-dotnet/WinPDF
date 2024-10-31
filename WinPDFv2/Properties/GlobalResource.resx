@@ -124,4 +124,7 @@
   <data name="OpenusIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Openus.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>https://sites.google.com/view/openus-dotnet/application/winpdf</value>
+  </data>
 </root>

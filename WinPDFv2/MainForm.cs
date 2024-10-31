@@ -58,7 +58,7 @@ namespace Openus.WinPDFv2
                 };
 
                 _webView.EnsureCoreWebView2Async(webView2Environment);
-                _webView.Source = new Uri(@"https://sites.google.com/view/openus-dotnet/project/winpdf");
+                _webView.Source = new Uri(GlobalResource.HomePage);
 
                 GroupBox raw = new GroupBox()
                 {
