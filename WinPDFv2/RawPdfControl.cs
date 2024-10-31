@@ -1,9 +1,9 @@
 ﻿using Microsoft.Web.WebView2.WinForms;
-using Openus.WinPDF2.Properties;
+using Openus.WinPDFv2.Properties;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 
-namespace Openus.WinPDF2
+namespace Openus.WinPDFv2
 {
     public class RawPdfControl : Panel
     {
@@ -158,7 +158,7 @@ namespace Openus.WinPDF2
             }
 
             string newName = new FileInfo(Document.FullPath).Name;
-            string newPath = Path.Combine(AppPath.AppDataPath, $"{newName[0..(newName.Length - 4)]} [{from}-{to}].pdf");
+            string newPath = Path.Combine(AppPath.AppData.Data, $"{newName[0..(newName.Length - 4)]} [{from}-{to}].pdf");
 
             newPdf.Save(newPath);
 

@@ -1,20 +1,23 @@
-namespace Openus.WinPDF2.Properties
+using Openus.AppPath;
+
+namespace Openus.WinPDFv2.Properties
 {
     internal static class Program
     {
         private static void Setup()
         {
-            if (Directory.Exists(AppPath.AppMainPath) == false)
+            if (Directory.Exists(AppData.Root) == false)
             {
-                Directory.CreateDirectory(AppPath.AppMainPath);
+                Directory.CreateDirectory(AppData.Root);
             }
-            if (Directory.Exists(AppPath.AppDataPath) == false)
+
+            if (Directory.Exists(AppData.Data) == false)
             {
-                Directory.CreateDirectory(AppPath.AppDataPath);
+                Directory.CreateDirectory(AppData.Data);
             }
             else
             {
-                foreach (var file in Directory.GetFiles(AppPath.AppDataPath))
+                foreach (var file in Directory.GetFiles(AppData.Data))
                 {
                     File.Delete(file);
                 }

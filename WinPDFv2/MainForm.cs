@@ -2,9 +2,10 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
-using Openus.WinPDF2.Properties;
+using Openus.WinPDFv2.Properties;
+using Openus.AppPath;
 
-namespace Openus.WinPDF2
+namespace Openus.WinPDFv2
 {
     public class MainForm : Form
     {
@@ -22,12 +23,12 @@ namespace Openus.WinPDF2
             /// Set Properties
             {
                 Text = "WinPDF v2";
-                ClientSize = new Size(800, 600);
 
-                using (MemoryStream ms = new MemoryStream(GlobalResource.OpenusIcon))
-                {
-                    Icon = new Icon(ms);
-                }
+                StartPosition = FormStartPosition.CenterScreen;
+                ClientSize = GlobalSetting.Default.WindowSize;
+                Icon = GlobalResource.OpenusIcon;
+
+                FormClosed += MainFormClosed;
             }
 
             /// Set Elements
@@ -47,7 +48,7 @@ namespace Openus.WinPDF2
                 };
 
                 CoreWebView2Environment webView2Environment
-                    = CoreWebView2Environment.CreateAsync(null, AppPath.AppMainPath).Result;
+                    = CoreWebView2Environment.CreateAsync(null, AppData.Root).Result;
 
                 _webView = new WebView2()
                 {
@@ -109,7 +110,7 @@ namespace Openus.WinPDF2
 
                 file.DropDownItems.Add("Open PDF").Click += FileOpenPdfClick;
                 save.DropDownItems.Add("Save Merged Result PDF").Click += SaveMergedPdfClick;
-                save.DropDownItems.Add("Save Splited Result PDF").Click += SaveSplitedPdfClick;
+                save.DropDownItems.Add("Save Split Result PDF").Click += SaveSplitPdfClick;
                 tool.DropDownItems.Add("Remove All Raw PDF").Click += ToolRemoveAllRawClick;
                 tool.DropDownItems.Add("Remove All Result PDF").Click += ToolRemoveAllResultClick;
                 tool.DropDownItems.Add("Append All Raw to Result PDF").Click += ToolAppendAllClick;
@@ -135,6 +136,13 @@ namespace Openus.WinPDF2
                 _tableLayout.SetRow(_mainProgressBar, 3);
                 _tableLayout.SetColumnSpan(_mainProgressBar, 2);
             }
+        }
+
+        private void MainFormClosed(object? sender, FormClosedEventArgs e)
+        {
+            GlobalSetting.Default.WindowSize = ClientSize;
+
+            GlobalSetting.Default.Save();
         }
 
         private void ToolPreviewlClick(object? sender, EventArgs e)
@@ -168,7 +176,7 @@ namespace Openus.WinPDF2
                 }
             }
 
-            string temp = Path.Combine(AppPath.AppDataPath, "temp-merge.pdf");
+            string temp = Path.Combine(AppData.Data, "temp-merge.pdf");
 
             Invoke(() => UseProgressBar());
             pdfDocument.Save(temp);
@@ -178,14 +186,26 @@ namespace Openus.WinPDF2
 
         private void ToolRemoveAllResultClick(object? sender, EventArgs e)
         {
-            _resultList.Controls.Clear();
-            ResultPdfControl.Pdfs.Clear();
+            DialogResult result
+                = MessageBox.Show("Remove all Result group's PDF?", GlobalResource.SystemText, MessageBoxButtons.OKCancel);
+
+            if (result == DialogResult.OK)
+            {
+                _resultList.Controls.Clear();
+                ResultPdfControl.Pdfs.Clear();
+            }
         }
 
         private void ToolRemoveAllRawClick(object? sender, EventArgs e)
         {
-            _rawList.Controls.Clear();
-            RawPdfControl.Pdfs.Clear();
+            DialogResult result 
+                = MessageBox.Show("Remove all Raw group's PDF?", GlobalResource.SystemText, MessageBoxButtons.OKCancel);
+
+            if (result == DialogResult.OK)
+            {
+                _rawList.Controls.Clear();
+                RawPdfControl.Pdfs.Clear();
+            }
         }
 
         private void ToolAppendAllClick(object? sender, EventArgs e)
@@ -252,7 +272,7 @@ namespace Openus.WinPDF2
             }
         }
 
-        private void SaveSplitedPdfClick(object? sender, EventArgs e)
+        private void SaveSplitPdfClick(object? sender, EventArgs e)
         {
             if (ResultPdfControl.Pdfs.Count == 0)
             {

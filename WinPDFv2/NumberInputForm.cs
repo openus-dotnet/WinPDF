@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Openus.WinPDF2
+namespace Openus.WinPDFv2
 {
     public class NumberInputForm : Form
     {
@@ -19,6 +19,7 @@ namespace Openus.WinPDF2
             MinimizeBox = false;
             MaximizeBox = false;
             ShowIcon = false;
+            StartPosition = FormStartPosition.CenterParent;
 
             _tableLayoutPanel = new TableLayoutPanel()
             {

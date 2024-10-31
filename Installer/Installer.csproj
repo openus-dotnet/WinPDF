@@ -6,7 +6,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationManifest>menifest.manifest</ApplicationManifest>
-    <AssemblyName>Openus.WinPDF2.Installer</AssemblyName>
+    <AssemblyName>Openus.WinPDFv2.Installer</AssemblyName>
     <RootNamespace>Openus.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <ApplicationIcon>Openus.ico</ApplicationIcon>
     <Authors>elecbug</Authors>
@@ -22,6 +22,10 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppPath\AppPath.csproj" />
   </ItemGroup>
 
 </Project>

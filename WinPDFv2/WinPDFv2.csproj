@@ -27,10 +27,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppPath\AppPath.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\GlobalResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>GlobalResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\GlobalSetting.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GlobalSetting.settings</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -39,6 +48,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\GlobalSetting.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>GlobalSetting.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 	
 </Project>

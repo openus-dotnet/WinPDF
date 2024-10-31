@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Openus.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Openus.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <Authors>elecbug</Authors>
+    <Company>Openus.NET</Company>
+    <Copyright>Openus.NET</Copyright>
+    <RepositoryUrl>https://github.com/openus-dotnet/WinPDF</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>

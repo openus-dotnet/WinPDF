@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Openus.WinPDF2.Properties {
+namespace Openus.WinPDFv2.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Openus.WinPDF2.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Openus.WinPDF2.Properties.GlobalResource", typeof(GlobalResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Openus.WinPDFv2.Properties.GlobalResource", typeof(GlobalResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,12 +61,12 @@ namespace Openus.WinPDF2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static byte[] OpenusIcon {
+        internal static System.Drawing.Icon OpenusIcon {
             get {
                 object obj = ResourceManager.GetObject("OpenusIcon", resourceCulture);
-                return ((byte[])(obj));
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
