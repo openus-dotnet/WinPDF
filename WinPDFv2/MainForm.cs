@@ -104,17 +104,19 @@ namespace Openus.WinPDFv2
                     Value = 0,
                 }; 
 
-                ToolStripMenuItem file = (ToolStripMenuItem)_menuStrip.Items.Add("File");
+                ToolStripMenuItem open = (ToolStripMenuItem)_menuStrip.Items.Add("Open");
                 ToolStripMenuItem save = (ToolStripMenuItem)_menuStrip.Items.Add("Save");
                 ToolStripMenuItem tool = (ToolStripMenuItem)_menuStrip.Items.Add("Tool");
+                ToolStripMenuItem info = (ToolStripMenuItem)_menuStrip.Items.Add("Info");
 
-                file.DropDownItems.Add("Open PDF").Click += FileOpenPdfClick;
+                open.DropDownItems.Add("Open PDF").Click += OpenPdfClick;
                 save.DropDownItems.Add("Save Merged Result PDF").Click += SaveMergedPdfClick;
                 save.DropDownItems.Add("Save Split Result PDF").Click += SaveSplitPdfClick;
                 tool.DropDownItems.Add("Remove All Raw PDF").Click += ToolRemoveAllRawClick;
                 tool.DropDownItems.Add("Remove All Result PDF").Click += ToolRemoveAllResultClick;
                 tool.DropDownItems.Add("Append All Raw to Result PDF").Click += ToolAppendAllClick;
                 tool.DropDownItems.Add("Preview Result PDF").Click += ToolPreviewlClick;
+                info.DropDownItems.Add("Dependencies").Click += InfoDependencyClick;
 
                 _tableLayout.RowStyles.Add(new RowStyle(height: _menuStrip.Height, sizeType: SizeType.Absolute));
                 _tableLayout.RowStyles.Add(new RowStyle(height: 1, sizeType: SizeType.Percent));
@@ -136,6 +138,11 @@ namespace Openus.WinPDFv2
                 _tableLayout.SetRow(_mainProgressBar, 3);
                 _tableLayout.SetColumnSpan(_mainProgressBar, 2);
             }
+        }
+
+        private void InfoDependencyClick(object? sender, EventArgs e)
+        {
+            MessageBox.Show(GlobalResource.Dependencies, "Dependencies");
         }
 
         private void MainFormClosed(object? sender, FormClosedEventArgs e)
@@ -177,9 +184,9 @@ namespace Openus.WinPDFv2
             }
 
             string temp = Path.Combine(AppData.Data, "temp-merge.pdf");
-
-            Invoke(() => UseProgressBar());
             pdfDocument.Save(temp);
+
+            EndProgressBar();
 
             _webView.Source = new Uri(temp);
         }
@@ -193,6 +200,8 @@ namespace Openus.WinPDFv2
             {
                 _resultList.Controls.Clear();
                 ResultPdfControl.Pdfs.Clear();
+
+                EndProgressBar();
             }
         }
 
@@ -205,6 +214,8 @@ namespace Openus.WinPDFv2
             {
                 _rawList.Controls.Clear();
                 RawPdfControl.Pdfs.Clear();
+
+                EndProgressBar();
             }
         }
 
@@ -226,7 +237,7 @@ namespace Openus.WinPDFv2
                 Invoke(() => UseProgressBar(i, max));
             }
 
-            Invoke(() => UseProgressBar());
+            EndProgressBar();
         }
 
         private void SaveMergedPdfClick(object? sender, EventArgs e)
@@ -267,8 +278,9 @@ namespace Openus.WinPDFv2
                     }
                 }
 
-                Invoke(() => UseProgressBar());
                 pdfDocument.Save(dialog.FileName);
+
+                EndProgressBar();
             }
         }
 
@@ -340,12 +352,12 @@ namespace Openus.WinPDFv2
                         pdfDocument = new PdfDocument();
                     }
 
-                    Invoke(() => UseProgressBar());
+                    EndProgressBar();
                 }
             }
         }
 
-        private void FileOpenPdfClick(object? sender, EventArgs e)
+        private void OpenPdfClick(object? sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog()
             {
@@ -434,10 +446,7 @@ namespace Openus.WinPDFv2
                         {
                             if (id == dialog.FileNames.Length)
                             {
-                                Invoke(() =>
-                                {
-                                    UseProgressBar();
-                                });
+                                EndProgressBar();
 
                                 if (failedList.Count > 0)
                                 {
@@ -452,11 +461,24 @@ namespace Openus.WinPDFv2
             }
         }
 
-        private void UseProgressBar(int mainValue = 0, int mainMax = 100)
+        private void UseProgressBar(int mainValue, int mainMax)
         {
             _mainProgressBar.Minimum = 0;
             _mainProgressBar.Maximum = mainMax;
             _mainProgressBar.Value = mainValue;
+        }
+
+        private void EndProgressBar()
+        {
+            new Thread(() =>
+            {
+                Invoke(async () =>
+                {
+                    UseProgressBar(1, 1);
+                    await Task.Delay(500);
+                    UseProgressBar(0, 1);
+                });
+            }).Start();
         }
     }
 }

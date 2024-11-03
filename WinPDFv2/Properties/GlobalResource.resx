@@ -127,4 +127,9 @@
   <data name="HomePage" xml:space="preserve">
     <value>https://sites.google.com/view/openus-dotnet/application/winpdf</value>
   </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Microsoft.Web.WebView2 (1.0.2210.565)
+PDFsharp (6.0.0)
+Newtonsoft.Json (13.0.3)</value>
+  </data>
 </root>

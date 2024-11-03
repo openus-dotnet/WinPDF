@@ -61,6 +61,17 @@ namespace Openus.WinPDFv2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Microsoft.Web.WebView2 (1.0.2210.565)
+        ///PDFsharp (6.0.0)
+        ///Newtonsoft.Json (13.0.3).
+        /// </summary>
+        internal static string Dependencies {
+            get {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://sites.google.com/view/openus-dotnet/application/winpdf.
         /// </summary>
         internal static string HomePage {
