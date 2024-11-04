@@ -154,7 +154,7 @@ namespace Openus.Installer
                 if (Directory.Exists(ProgramFiles.ProgramPath))
                 {
                     Directory.Delete(ProgramFiles.ProgramPath, true);
-                    Console.WriteLine($"Deleted: {ProgramFiles.ProgramPath}");
+                    Console.WriteLine("Program files removed");
                 }
 
                 string registryPath = $@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{ProgramFiles.ProgramName}";
