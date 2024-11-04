@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Openus.AppPath;
+using System.IO.Compression;
 
 namespace Openus.Installer
 {
@@ -18,28 +19,34 @@ namespace Openus.Installer
                 if (args.Length > 0 && args[0].ToLower() == "uninstall")
                 {
                     UninstallApp();
-                    return;
+
+                    Console.WriteLine("Uninstallation completed successfully!");
+                    Console.ReadLine();
                 }
+                else
+                {
+                    /// Temp
+                    /// 
+                    ///string? dotnetUrl = await GetLatestDotNet8RuntimeUrl();
+                    ///
+                    ///if (dotnetUrl != null)
+                    ///{
+                    ///    await DownloadAndInstallDotNet8Runtime(dotnetUrl);
+                    ///}
 
-                // Download latest release
-                string downloadedFile = await DownloadLatestRelease();
-                Console.WriteLine($"Downloaded: {downloadedFile}");
+                    string downloadedFile = await DownloadLatestRelease();
 
-                // Install the app and copy the MSI file
-                InstallApp(downloadedFile);
+                    InstallApp(downloadedFile);
+                    CreateShortcut();
+                    RegisterApp();
 
-                // Create desktop shortcut
-                CreateShortcut(ProgramFiles.DesktopShortcutPath, Path.Combine(ProgramFiles.InstallPath, ProgramFiles.ExecutableName));
-
-                // Register app with MSI uninstall command
-                RegisterApp("WinPDFv2");
-
-                Console.WriteLine("Installation completed successfully!");
-                Console.ReadLine();
+                    Console.WriteLine("Installation completed successfully!");
+                    Console.ReadLine();
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine(ex.Message);
                 Console.ReadLine();
             }
         }
@@ -54,44 +61,51 @@ namespace Openus.Installer
                 var json = JObject.Parse(response);
                 var downloadUrl = json["assets"]![0]!["browser_download_url"]!.ToString();
 
+                Console.WriteLine($"Get download URL");
+                Console.WriteLine("Downloading... Please to wait");
+
                 string tempPath = Path.GetTempPath() + "latest_release.zip";
                 var downloadData = await client.GetByteArrayAsync(downloadUrl);
                 await File.WriteAllBytesAsync(tempPath, downloadData);
 
+                Console.WriteLine($"Downloaded latest release");
                 return tempPath;
             }
         }
 
         private static void InstallApp(string zipPath)
         {
-            if (!Directory.Exists(ProgramFiles.InstallPath))
+            Console.WriteLine("Check directories");
+
+            if (!Directory.Exists(ProgramFiles.ProgramPath))
             {
-                Directory.CreateDirectory(ProgramFiles.InstallPath);
+                Directory.CreateDirectory(ProgramFiles.ProgramPath);
             }
-            if (!Directory.Exists(ProgramFiles.MsiPath))
+            if (!Directory.Exists(ProgramFiles.InstallerPath))
             {
-                Directory.CreateDirectory(ProgramFiles.MsiPath);
+                Directory.CreateDirectory(ProgramFiles.InstallerPath);
             }
 
-            // Extract ZIP contents to installation path
-            System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, ProgramFiles.InstallPath, true);
+            Console.WriteLine("Extract lastest release");
 
-            // Copy MSI file to installation path
+            ZipFile.ExtractToDirectory(zipPath, ProgramFiles.ProgramPath, true);
             DirectoryInfo dir = new DirectoryInfo(Environment.CurrentDirectory);
 
             foreach (FileInfo info in dir.GetFiles())
             {
-                File.Copy(info.FullName, Path.Combine(ProgramFiles.MsiPath, info.Name), true);
+                File.Copy(info.FullName, Path.Combine(ProgramFiles.InstallerPath, info.Name), true);
             }
 
-            Console.WriteLine($"App installed to: {ProgramFiles.InstallPath}");
+            Console.WriteLine($"App installed");
         }
 
-        private static void CreateShortcut(string shortcutPath, string targetPath)
+        private static void CreateShortcut()
         {
+            string targetPath = Path.Combine(ProgramFiles.ProgramPath, ProgramFiles.ProgramName);
+
             string psCommand = $@"
                 $WScript = New-Object -ComObject WScript.Shell;
-                $Shortcut = $WScript.CreateShortcut('{shortcutPath}');
+                $Shortcut = $WScript.CreateShortcut('{ProgramFiles.DesktopShortcutPath}');
                 $Shortcut.TargetPath = '{targetPath}';
                 $Shortcut.Save();
             ";
@@ -103,28 +117,27 @@ namespace Openus.Installer
             };
 
             Process.Start(psi)?.WaitForExit();
-            Console.WriteLine("Shortcut created on the desktop.");
+            Console.WriteLine("Shortcut created on the desktop");
         }
 
         [SupportedOSPlatform("windows")]
-        private static void RegisterApp(string appName)
+        private static void RegisterApp()
         {
-            string registryPath = $@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{appName}";
+            string registryPath = $@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{ProgramFiles.ProgramName}";
 
             using (var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(registryPath))
             {
-                key.SetValue("DisplayName", appName);
-                key.SetValue("DisplayIcon", Path.Combine(ProgramFiles.InstallPath, ProgramFiles.ExecutableName));
-                key.SetValue("InstallLocation", ProgramFiles.InstallPath);
+                key.SetValue("DisplayName", ProgramFiles.ProgramName);
+                key.SetValue("DisplayIcon", Path.Combine(ProgramFiles.ProgramPath, ProgramFiles.ProgramName));
+                key.SetValue("InstallLocation", ProgramFiles.ProgramPath);
 
-                // Register the MSI uninstall command
-                string uninstallCommand = $"\"{ProgramFiles.MsiPath}\\{ProgramFiles.MsiFileName}\" uninstall";
+                string uninstallCommand = $"\"{ProgramFiles.InstallerPath}\\{ProgramFiles.InstallerName}\" uninstall";
+
                 key.SetValue("UninstallString", uninstallCommand);
-
                 key.SetValue("Publisher", "Openus.NET");
             }
 
-            Console.WriteLine("App registered in the registry with MSI uninstall command.");
+            Console.WriteLine("App registered in the registry");
         }
 
         [SupportedOSPlatform("windows")]
@@ -132,31 +145,92 @@ namespace Openus.Installer
         {
             try
             {
-                // Remove the desktop shortcut
                 if (File.Exists(ProgramFiles.DesktopShortcutPath))
                 {
                     File.Delete(ProgramFiles.DesktopShortcutPath);
-                    Console.WriteLine("Desktop shortcut removed.");
+                    Console.WriteLine("Desktop shortcut removed");
                 }
 
-                // Delete the installation directory
-                if (Directory.Exists(ProgramFiles.InstallPath))
+                if (Directory.Exists(ProgramFiles.ProgramPath))
                 {
-                    Directory.Delete(ProgramFiles.InstallPath, true);
-                    Console.WriteLine($"Deleted: {ProgramFiles.InstallPath}");
+                    Directory.Delete(ProgramFiles.ProgramPath, true);
+                    Console.WriteLine($"Deleted: {ProgramFiles.ProgramPath}");
                 }
 
-                // Remove the registry entry
-                string registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WinPDFv2";
-                Microsoft.Win32.Registry.LocalMachine.DeleteSubKey(registryPath, false);
-                Console.WriteLine("App unregistered from the registry.");
+                string registryPath = $@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{ProgramFiles.ProgramName}";
 
-                Console.WriteLine("Uninstallation completed successfully!");
+                Microsoft.Win32.Registry.LocalMachine.DeleteSubKey(registryPath, false);
+                Console.WriteLine("App unregistered from the registry");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Uninstallation error: {ex.Message}");
+                Console.WriteLine(ex.Message);
             }
+        }
+
+
+        private static async Task DownloadAndInstallDotNet8Runtime(string url)
+        {
+            string tempFilePath = Path.Combine(Path.GetTempPath(), "dotnet-runtime-8.0.0-win-x64.exe");
+
+            using (HttpClient client = new HttpClient())
+            {
+                byte[] fileBytes = await client.GetByteArrayAsync(url);
+                await File.WriteAllBytesAsync(tempFilePath, fileBytes);
+            }
+
+            try
+            {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = tempFilePath,
+                        Arguments = "/install /quiet /norestart",
+                        UseShellExecute = true,
+                        Verb = "runas",
+                    }
+                };
+
+                process.Start();
+                process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
+            }
+        }
+
+        private static async Task<string?> GetLatestDotNet8RuntimeUrl()
+        {
+            string apiUrl = "https://api.github.com/repos/dotnet/core/releases/latest";
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "C# App");
+
+                var response = await client.GetStringAsync(apiUrl);
+                var json = JObject.Parse(response);
+
+                foreach (var asset in json["assets"]!)
+                {
+                    string name = asset["name"]!.ToString();
+                    string downloadUrl = asset["browser_download_url"]!.ToString();
+
+                    if (name.Contains("dotnet-runtime-8.0") && name.EndsWith("-win-x64.exe"))
+                    {
+                        return downloadUrl;
+                    }
+                }
+            }
+            return null;
         }
     }
 }
