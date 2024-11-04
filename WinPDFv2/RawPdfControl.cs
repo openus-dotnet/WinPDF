@@ -1,5 +1,4 @@
 ﻿using Microsoft.Web.WebView2.WinForms;
-using Openus.WinPDFv2.Properties;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 
