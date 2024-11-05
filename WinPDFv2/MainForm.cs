@@ -2,6 +2,8 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Openus.WinPDFv2.Properties;
 using Openus.AppPath;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf;
 
 namespace Openus.WinPDFv2
 {
@@ -15,8 +17,9 @@ namespace Openus.WinPDFv2
         private ProgressBar _mainProgressBar;
 
         private int _id = 0;
+        private string[] _beginArgs;
 
-        public MainForm()
+        public MainForm(string[] args)
         {
             /// Set Properties
             {
@@ -26,7 +29,10 @@ namespace Openus.WinPDFv2
                 ClientSize = GlobalSetting.Default.WindowSize;
                 Icon = GlobalResource.OpenusIcon;
 
+                Shown += MainFormShown;
                 FormClosed += MainFormClosed;
+
+                _beginArgs = args;
             }
 
             /// Set Elements
@@ -138,6 +144,19 @@ namespace Openus.WinPDFv2
             }
         }
 
+        private void MainFormShown(object? sender, EventArgs e)
+        {
+            if (_beginArgs.Length == 0)
+            {
+                return;
+            }
+
+            List<string> files = new List<string>();
+
+            OpenPdfFromSetup(_beginArgs, files);
+            LoadPdf(files.ToArray());
+        }
+
         private void MainFormClosed(object? sender, FormClosedEventArgs e)
         {
             GlobalSetting.Default.WindowSize = ClientSize;
@@ -161,6 +180,120 @@ namespace Openus.WinPDFv2
                     await Task.Delay(500);
                     UseProgressBar(0, 1);
                 });
+            }).Start();
+        }
+
+        private void OpenPdfFromSetup(string[] args, List<string> files)
+        {
+            foreach (string arg in args)
+            {
+                if (Directory.Exists(arg) == true)
+                {
+                    DirectoryInfo info = new DirectoryInfo(arg);
+                    List<string> subdirs = info.GetDirectories().ToList().ConvertAll(x => x.FullName);
+                    List<string> subfiles = info.GetFiles().ToList().ConvertAll(x => x.FullName);
+
+                    OpenPdfFromSetup(subdirs.Concat(subfiles).ToArray(), files);
+                }
+                else if (File.Exists(arg) == true)
+                {
+                    files.Add(arg);
+                }
+            }
+        }
+
+        private void LoadPdf(string[] files)
+        {
+            int seqence = 0;
+            object locker = new object();
+            Thread[] tasks = new Thread[files.Length];
+            List<string> failedList = new List<string>();
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                int x = i;
+
+                tasks[x] = new Thread(() =>
+                {
+                    string file = files[x];
+
+                    try
+                    {
+                        PdfDocument pdf = PdfReader.Open(file, PdfDocumentOpenMode.Import);
+
+                        while (true)
+                        {
+                            lock (locker)
+                            {
+                                if (x == seqence)
+                                {
+                                    Invoke(() =>
+                                    {
+                                        RawPdfControl control
+                                            = new RawPdfControl(pdf, _id++, _webView, _resultList)
+                                            {
+                                                Parent = _rawList,
+                                                Dock = DockStyle.Fill,
+                                                Height = 30,
+                                            };
+                                        _rawList.SetRow(control, x);
+
+                                        RawPdfControl.Pdfs.Add(control);
+
+                                        UseProgressBar(seqence, files.Length);
+                                    });
+
+                                    seqence++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        while (true)
+                        {
+                            lock (locker)
+                            {
+                                if (x == seqence)
+                                {
+                                    Invoke(() =>
+                                    {
+                                        failedList.Add(file);
+
+                                        UseProgressBar(seqence, files.Length);
+                                    });
+
+                                    seqence++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+
+                tasks[x].Start();
+            }
+
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    lock (locker)
+                    {
+                        if (seqence == files.Length)
+                        {
+                            EndProgressBar();
+
+                            if (failedList.Count > 0)
+                            {
+                                MessageBox.Show("Fail to open some PDFs\n\n" + string.Join("\n", failedList), GlobalResource.SystemText);
+                            }
+
+                            break;
+                        }
+                    }
+                }
             }).Start();
         }
     }
