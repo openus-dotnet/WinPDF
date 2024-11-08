@@ -14,12 +14,8 @@
     <SignAssembly>False</SignAssembly>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <AssemblyName>Openus.$(MSBuildProjectName)</AssemblyName>
-    <ApplicationIcon>Properties\Openus.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Openus.ico</ApplicationIcon>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Properties\Openus.ico" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
