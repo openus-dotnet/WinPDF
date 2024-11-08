@@ -159,7 +159,7 @@ namespace Openus.Installer
 
                 string registryPath = $@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{ProgramFiles.ProgramName}";
 
-                Microsoft.Win32.Registry.LocalMachine.DeleteSubKey(registryPath, false);
+                Microsoft.Win32.Registry.LocalMachine.DeleteSubKeyTree(registryPath, false);
                 Console.WriteLine("App unregistered from the registry");
             }
             catch (Exception ex)
