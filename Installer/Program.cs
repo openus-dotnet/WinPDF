@@ -61,10 +61,10 @@ namespace Openus.Installer
                 var json = JObject.Parse(response);
                 var downloadUrl = json["assets"]![0]!["browser_download_url"]!.ToString();
 
-                Console.WriteLine($"Get download URL");
+                Console.WriteLine($"Get download URL({downloadUrl})");
                 Console.WriteLine("Downloading... Please to wait");
 
-                string tempPath = Path.GetTempPath() + "latest_release.zip";
+                string tempPath = Path.Combine(Path.GetTempPath(), "latest_release.zip");
                 var downloadData = await client.GetByteArrayAsync(downloadUrl);
                 await File.WriteAllBytesAsync(tempPath, downloadData);
 
