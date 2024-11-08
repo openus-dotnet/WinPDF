@@ -77,15 +77,22 @@ namespace Openus.Installer
         {
             Console.WriteLine("Check directories");
 
-            if (!Directory.Exists(ProgramFiles.ProgramPath))
+            if (Directory.Exists(ProgramFiles.ProgramPath))
             {
-                Directory.CreateDirectory(ProgramFiles.ProgramPath);
+                DirectoryInfo info = new DirectoryInfo(ProgramFiles.ProgramPath);
+                info.Delete(true);
             }
-            if (!Directory.Exists(ProgramFiles.InstallerPath))
+            
+            Directory.CreateDirectory(ProgramFiles.ProgramPath);
+            
+            if (Directory.Exists(ProgramFiles.InstallerPath))
             {
-                Directory.CreateDirectory(ProgramFiles.InstallerPath);
+                DirectoryInfo info = new DirectoryInfo(ProgramFiles.InstallerPath);
+                info.Delete(true);
             }
 
+            Directory.CreateDirectory(ProgramFiles.InstallerPath);
+            
             Console.WriteLine("Extract lastest release");
 
             ZipFile.ExtractToDirectory(zipPath, ProgramFiles.ProgramPath, true);
