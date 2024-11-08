@@ -24,9 +24,6 @@ namespace Openus.WinPDFv2
             /// Set Properties
             {
                 Text = "WinPDF v2";
-
-                StartPosition = FormStartPosition.CenterScreen;
-                ClientSize = GlobalSetting.Default.WindowSize;
                 Icon = GlobalResource.OpenusIcon;
 
                 Shown += MainFormShown;
@@ -146,6 +143,9 @@ namespace Openus.WinPDFv2
 
         private void MainFormShown(object? sender, EventArgs e)
         {
+            Location = GlobalSetting.Default.WindowPosition;
+            ClientSize = GlobalSetting.Default.WindowSize;
+
             if (_beginArgs.Length == 0)
             {
                 return;
@@ -159,6 +159,7 @@ namespace Openus.WinPDFv2
 
         private void MainFormClosed(object? sender, FormClosedEventArgs e)
         {
+            GlobalSetting.Default.WindowPosition = Location;
             GlobalSetting.Default.WindowSize = ClientSize;
             GlobalSetting.Default.Save();
         }

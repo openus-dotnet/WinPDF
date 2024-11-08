@@ -12,7 +12,7 @@ namespace Openus.WinPDFv2.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     public sealed partial class GlobalSetting : global::System.Configuration.ApplicationSettingsBase {
         
         private static GlobalSetting defaultInstance = ((GlobalSetting)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new GlobalSetting())));
@@ -32,6 +32,18 @@ namespace Openus.WinPDFv2.Properties {
             }
             set {
                 this["WindowSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50, 50")]
+        public global::System.Drawing.Point WindowPosition {
+            get {
+                return ((global::System.Drawing.Point)(this["WindowPosition"]));
+            }
+            set {
+                this["WindowPosition"] = value;
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using Openus.AppPath;
 using Openus.WinPDFv2.Properties;
-using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf;
 
 namespace Openus.WinPDFv2
