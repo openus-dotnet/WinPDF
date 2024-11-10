@@ -15,6 +15,8 @@
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <AssemblyName>Openus.$(MSBuildProjectName)</AssemblyName>
     <ApplicationIcon>Resources\Openus.ico</ApplicationIcon>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Languages\Default.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Default.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\GlobalResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -40,6 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Languages\Default.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Default.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\GlobalResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalResource.Designer.cs</LastGenOutput>

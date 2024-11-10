@@ -22,14 +22,14 @@ namespace Openus.WinPDFv2
 
         private void InfoDependencyClick(object? sender, EventArgs e)
         {
-            MessageBox.Show(GlobalResource.Dependencies, "Dependencies");
+            MessageBox.Show(GlobalResource.Dependencies, Languages.Default.DependenciesMenu);
         }
 
         private void ToolPreviewlClick(object? sender, EventArgs e)
         {
             if (ResultPdfControl.Pdfs.Count == 0)
             {
-                MessageBox.Show("Result PDF count is 0", GlobalResource.SystemText);
+                MessageBox.Show(Languages.Default.ResultPdfCountZero, Languages.Default.SystemTitle);
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace Openus.WinPDFv2
         private void ToolRemoveAllResultClick(object? sender, EventArgs e)
         {
             DialogResult result
-                = MessageBox.Show("Remove all Result group's PDF?", GlobalResource.SystemText, MessageBoxButtons.OKCancel);
+                = MessageBox.Show(Languages.Default.RemoveAllResultPdf, Languages.Default.SystemTitle, MessageBoxButtons.OKCancel);
 
             if (result == DialogResult.OK)
             {
@@ -81,7 +81,7 @@ namespace Openus.WinPDFv2
         private void ToolRemoveAllRawClick(object? sender, EventArgs e)
         {
             DialogResult result
-                = MessageBox.Show("Remove all Raw group's PDF?", GlobalResource.SystemText, MessageBoxButtons.OKCancel);
+                = MessageBox.Show(Languages.Default.RemoveAllRawPdf, Languages.Default.SystemTitle, MessageBoxButtons.OKCancel);
 
             if (result == DialogResult.OK)
             {
@@ -96,7 +96,7 @@ namespace Openus.WinPDFv2
         {
             if (RawPdfControl.Pdfs.Count == 0)
             {
-                MessageBox.Show("Raw PDF count is 0", GlobalResource.SystemText);
+                MessageBox.Show(Languages.Default.RawPdfCountZero, Languages.Default.SystemTitle);
                 return;
             }
 
@@ -117,7 +117,7 @@ namespace Openus.WinPDFv2
         {
             if (ResultPdfControl.Pdfs.Count == 0)
             {
-                MessageBox.Show("Result PDF count is 0", GlobalResource.SystemText);
+                MessageBox.Show(Languages.Default.ResultPdfCountZero, Languages.Default.SystemTitle);
                 return;
             }
 
@@ -161,7 +161,7 @@ namespace Openus.WinPDFv2
         {
             if (ResultPdfControl.Pdfs.Count == 0)
             {
-                MessageBox.Show("Result PDF count is 0", GlobalResource.SystemText);
+                MessageBox.Show(Languages.Default.ResultPdfCountZero, Languages.Default.SystemTitle);
                 return;
             }
 

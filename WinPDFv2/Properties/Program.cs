@@ -1,4 +1,5 @@
 using Openus.AppPath;
+using System.Globalization;
 
 namespace Openus.WinPDFv2.Properties
 {
@@ -9,6 +10,32 @@ namespace Openus.WinPDFv2.Properties
             if (Directory.Exists(AppData.Root) == false)
             {
                 Directory.CreateDirectory(AppData.Root);
+
+                using (StreamWriter sw = new StreamWriter(AppData.Lang))
+                {
+                    sw.Write(CultureInfo.CurrentUICulture.Name);
+                }
+            }
+            else
+            {
+                if (File.Exists(AppData.Lang) == true)
+                {
+                    using (StreamReader sr = new StreamReader(AppData.Lang))
+                    {
+                        string lang = sr.ReadToEnd();
+
+                        Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(AppData.Lang))
+                    {
+                        sw.Write(CultureInfo.CurrentUICulture.Name);
+                        
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+                    }
+                }
             }
 
             if (Directory.Exists(AppData.Data) == false)

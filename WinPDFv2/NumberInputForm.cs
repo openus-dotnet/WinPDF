@@ -11,7 +11,7 @@
         public NumberInputForm()
         {
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Text = "Enter the split unit";
+            Text = Languages.Default.EnterTheSplitUnit;
             ClientSize = new Size(200, 60);
             MinimizeBox = false;
             MaximizeBox = false;
@@ -41,7 +41,7 @@
             _submitButton = new Button
             {
                 Parent = _tableLayoutPanel,
-                Text = "Submit",
+                Text = Languages.Default.Submit,
                 Location = new Point(5, 10 + _inputBox.Height),
                 Width = 190,
                 Height = 25,

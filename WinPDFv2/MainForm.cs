@@ -23,7 +23,7 @@ namespace Openus.WinPDFv2
         {
             /// Set Properties
             {
-                Text = "WinPDF v2";
+                Text = Languages.Default.Title;
                 Icon = GlobalResource.OpenusIcon;
 
                 Shown += MainFormShown;
@@ -66,7 +66,7 @@ namespace Openus.WinPDFv2
                     Parent = _tableLayout,
                     Dock = DockStyle.Fill,
                     Margin = new Padding(5),
-                    Text = "Raw",
+                    Text = Languages.Default.Raw,
                 };
 
                 _rawList = new TableLayoutPanel()
@@ -84,7 +84,7 @@ namespace Openus.WinPDFv2
                     Parent = _tableLayout,
                     Dock = DockStyle.Fill,
                     Margin = new Padding(5),
-                    Text = "Result",
+                    Text = Languages.Default.Result,
                 };
 
                 _resultList = new TableLayoutPanel()
@@ -105,19 +105,19 @@ namespace Openus.WinPDFv2
                     Value = 0,
                 };
 
-                ToolStripMenuItem open = (ToolStripMenuItem)_menuStrip.Items.Add("Open");
-                ToolStripMenuItem save = (ToolStripMenuItem)_menuStrip.Items.Add("Save");
-                ToolStripMenuItem tool = (ToolStripMenuItem)_menuStrip.Items.Add("Tool");
-                ToolStripMenuItem info = (ToolStripMenuItem)_menuStrip.Items.Add("Info");
+                ToolStripMenuItem open = (ToolStripMenuItem)_menuStrip.Items.Add(Languages.Default.OpenMenu);
+                ToolStripMenuItem save = (ToolStripMenuItem)_menuStrip.Items.Add(Languages.Default.SaveMenu);
+                ToolStripMenuItem tool = (ToolStripMenuItem)_menuStrip.Items.Add(Languages.Default.ToolMenu);
+                ToolStripMenuItem info = (ToolStripMenuItem)_menuStrip.Items.Add(Languages.Default.InfoMenu);
 
-                open.DropDownItems.Add("Open PDF").Click += OpenPdfClick;
-                save.DropDownItems.Add("Save Merged Result PDF").Click += SaveMergedPdfClick;
-                save.DropDownItems.Add("Save Split Result PDF").Click += SaveSplitPdfClick;
-                tool.DropDownItems.Add("Remove All Raw PDF").Click += ToolRemoveAllRawClick;
-                tool.DropDownItems.Add("Remove All Result PDF").Click += ToolRemoveAllResultClick;
-                tool.DropDownItems.Add("Append All Raw to Result PDF").Click += ToolAppendAllClick;
-                tool.DropDownItems.Add("Preview Result PDF").Click += ToolPreviewlClick;
-                info.DropDownItems.Add("Dependencies").Click += InfoDependencyClick;
+                open.DropDownItems.Add(Languages.Default.OpenPdfMenu).Click += OpenPdfClick;
+                save.DropDownItems.Add(Languages.Default.SaveMergedPdfMenu).Click += SaveMergedPdfClick;
+                save.DropDownItems.Add(Languages.Default.SaveSplitPdfMenu).Click += SaveSplitPdfClick;
+                tool.DropDownItems.Add(Languages.Default.RemoveAllRawPdfMenu).Click += ToolRemoveAllRawClick;
+                tool.DropDownItems.Add(Languages.Default.RemoveAllResultPdfMenu).Click += ToolRemoveAllResultClick;
+                tool.DropDownItems.Add(Languages.Default.AppendAllMenu).Click += ToolAppendAllClick;
+                tool.DropDownItems.Add(Languages.Default.PreviewMenu).Click += ToolPreviewlClick;
+                info.DropDownItems.Add(Languages.Default.DependenciesMenu).Click += InfoDependencyClick;
 
                 _tableLayout.RowStyles.Add(new RowStyle(height: _menuStrip.Height, sizeType: SizeType.Absolute));
                 _tableLayout.RowStyles.Add(new RowStyle(height: 1, sizeType: SizeType.Percent));
@@ -288,7 +288,7 @@ namespace Openus.WinPDFv2
 
                             if (failedList.Count > 0)
                             {
-                                MessageBox.Show("Fail to open some PDFs\n\n" + string.Join("\n", failedList), GlobalResource.SystemText);
+                                MessageBox.Show(Languages.Default.FailToOpenSomePdf + "\n\n" + string.Join("\n", failedList), Languages.Default.SystemTitle);
                             }
 
                             break;

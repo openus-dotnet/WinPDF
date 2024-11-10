@@ -117,16 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HomePage" xml:space="preserve">
-    <value>https://sites.google.com/view/openus-dotnet/application/winpdf</value>
+  <data name="SystemTitle" xml:space="preserve">
+    <value>System</value>
   </data>
-  <data name="Dependencies" xml:space="preserve">
-    <value>Microsoft.Web.WebView2 (1.0.2210.565)
-PDFsharp (6.0.0)
-Newtonsoft.Json (13.0.3)</value>
+  <data name="Raw" xml:space="preserve">
+    <value>Raw</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="OpenusIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Openus.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Title" xml:space="preserve">
+    <value>WinPDF v2</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="OpenMenu" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="SaveMenu" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ToolMenu" xml:space="preserve">
+    <value>Tool</value>
+  </data>
+  <data name="InfoMenu" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="OpenPdfMenu" xml:space="preserve">
+    <value>Load PDF</value>
+  </data>
+  <data name="SaveMergedPdfMenu" xml:space="preserve">
+    <value>Save Merged Result PDF</value>
+  </data>
+  <data name="SaveSplitPdfMenu" xml:space="preserve">
+    <value>Save Split Result PDF</value>
+  </data>
+  <data name="RemoveAllRawPdfMenu" xml:space="preserve">
+    <value>Remove All Raw PDF</value>
+  </data>
+  <data name="RemoveAllResultPdfMenu" xml:space="preserve">
+    <value>Remove All Result PDF</value>
+  </data>
+  <data name="AppendAllMenu" xml:space="preserve">
+    <value>Append All Raw to Result PDF</value>
+  </data>
+  <data name="PreviewMenu" xml:space="preserve">
+    <value>Preview Merged Result PDF</value>
+  </data>
+  <data name="DependenciesMenu" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="FailToOpenSomePdf" xml:space="preserve">
+    <value>Fail to open some PDFs.</value>
+  </data>
+  <data name="ResultPdfCountZero" xml:space="preserve">
+    <value>Result PDF count must grather then 0.</value>
+  </data>
+  <data name="RawPdfCountZero" xml:space="preserve">
+    <value>Raw PDF count must grather then 0.</value>
+  </data>
+  <data name="RemoveAllResultPdf" xml:space="preserve">
+    <value>Remove all Result group's PDF?</value>
+  </data>
+  <data name="RemoveAllRawPdf" xml:space="preserve">
+    <value>Remove all Raw group's PDF?</value>
+  </data>
+  <data name="EnterTheSplitUnit" xml:space="preserve">
+    <value>Enter the split unit</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

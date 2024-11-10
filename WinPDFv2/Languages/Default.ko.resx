@@ -117,16 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HomePage" xml:space="preserve">
-    <value>https://sites.google.com/view/openus-dotnet/application/winpdf</value>
+  <data name="SystemTitle" xml:space="preserve">
+    <value>시스템</value>
   </data>
-  <data name="Dependencies" xml:space="preserve">
-    <value>Microsoft.Web.WebView2 (1.0.2210.565)
-PDFsharp (6.0.0)
-Newtonsoft.Json (13.0.3)</value>
+  <data name="Raw" xml:space="preserve">
+    <value>원본</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="OpenusIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Openus.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Title" xml:space="preserve">
+    <value>WinPDF v2</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>결과</value>
+  </data>
+  <data name="OpenMenu" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="SaveMenu" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="ToolMenu" xml:space="preserve">
+    <value>도구</value>
+  </data>
+  <data name="InfoMenu" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="OpenPdfMenu" xml:space="preserve">
+    <value>PDF 불러오기</value>
+  </data>
+  <data name="SaveMergedPdfMenu" xml:space="preserve">
+    <value>결과 PDF를 병합하여 저장</value>
+  </data>
+  <data name="SaveSplitPdfMenu" xml:space="preserve">
+    <value>결과 PDF를 분할하여 저장</value>
+  </data>
+  <data name="RemoveAllRawPdfMenu" xml:space="preserve">
+    <value>모든 원본 PDF 삭제</value>
+  </data>
+  <data name="RemoveAllResultPdfMenu" xml:space="preserve">
+    <value>모든 결과 PDF 삭제</value>
+  </data>
+  <data name="AppendAllMenu" xml:space="preserve">
+    <value>모든 원본 PDF를 결과 창에 추가</value>
+  </data>
+  <data name="PreviewMenu" xml:space="preserve">
+    <value>병합된 결과 PDF 미리보기</value>
+  </data>
+  <data name="DependenciesMenu" xml:space="preserve">
+    <value>의존성</value>
+  </data>
+  <data name="FailToOpenSomePdf" xml:space="preserve">
+    <value>몇몇 PDF를 여는데 실패했습니다.</value>
+  </data>
+  <data name="ResultPdfCountZero" xml:space="preserve">
+    <value>결과 PDF의 개수가 0보다 커야합니다.</value>
+  </data>
+  <data name="RawPdfCountZero" xml:space="preserve">
+    <value>원본 PDF의 개수가 0보다 커야합니다.</value>
+  </data>
+  <data name="RemoveAllResultPdf" xml:space="preserve">
+    <value>결과 창의 모든 PDF를 삭제하시겠습니까?</value>
+  </data>
+  <data name="RemoveAllRawPdf" xml:space="preserve">
+    <value>원본 창의 모든 PDF를 삭제하시겠습니까?</value>
+  </data>
+  <data name="EnterTheSplitUnit" xml:space="preserve">
+    <value>분할 단위 입력</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>확인</value>
   </data>
 </root>

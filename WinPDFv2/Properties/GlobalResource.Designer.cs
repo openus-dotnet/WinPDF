@@ -89,14 +89,5 @@ namespace Openus.WinPDFv2.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to System.
-        /// </summary>
-        internal static string SystemText {
-            get {
-                return ResourceManager.GetString("SystemText", resourceCulture);
-            }
-        }
     }
 }
