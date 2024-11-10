@@ -138,7 +138,7 @@ namespace Openus.Installer
                 key.SetValue("DisplayIcon", Path.Combine(ProgramFiles.ProgramPath, ProgramFiles.ProgramName));
                 key.SetValue("InstallLocation", ProgramFiles.ProgramPath);
 
-                string uninstallCommand = $"\"{ProgramFiles.InstallerPath}\\{ProgramFiles.InstallerName}\" uninstall";
+                string uninstallCommand = $"\"{Path.Combine(ProgramFiles.InstallerPath, ProgramFiles.InstallerName)}\" uninstall";
 
                 key.SetValue("UninstallString", uninstallCommand);
                 key.SetValue("Publisher", "Openus.NET");
