@@ -218,7 +218,7 @@ namespace Openus.WinPDFv2
 
                     i--;
 
-                    if (range != 1)
+                    if (range != 1 && (i - (i % range) + 1) <= i)
                     {
                         pdfDocument.Save(dialog.FileName.Insert(dialog.FileName.Length - 4,
                                             $" [{(i - (i % range) + 1).ToString().PadLeft(4, '0')}-{i.ToString().PadLeft(4, '0')}]"));
