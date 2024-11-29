@@ -3,7 +3,7 @@
     public static class Constant
     {
         public const string Company = "Openus.NET";
-        public const string App = "WinPDFv2";
-        public const string Installer = "Install";
+        public const string AppName = "WinPDFv2";
+        public const string Installer = "Installer";
     }
 }
